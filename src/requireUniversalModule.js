@@ -123,10 +123,24 @@ export default function requireUniversalModule<Props: Props>(
       config
     }
     const exp = loadFromCache(chunkName, props, modCache)
-    if (exp) return Promise.resolve(exp)
+
+    if (exp) {
+      if (debug) {
+        console.warn('[requireAsync] Loaded from cache', exp, debugVars)
+      }
+
+      return Promise.resolve(exp)
+    }
 
     const cachedPromise = loadFromPromiseCache(chunkName, props, promCache)
-    if (cachedPromise) return cachedPromise
+
+    if (cachedPromise) {
+      if (debug) {
+        console.warn('[requireAsync] Loaded from promise cache', debugVars)
+      }
+
+      return cachedPromise
+    }
 
     const prom = new Promise((res, rej) => {
       const reject = error => {
@@ -159,7 +173,18 @@ export default function requireUniversalModule<Props: Props>(
           context,
           modCache
         )
-        if (exp) return res(exp)
+
+        if (exp) {
+          if (debug) {
+            console.warn(
+              '[requireAsync] Export resolved successfully',
+              exp,
+              debugVars
+            )
+          }
+
+          return res(exp)
+        }
 
         reject(new Error('export not found'))
       }
