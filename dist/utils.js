@@ -80,10 +80,10 @@ var tryRequire = (exports.tryRequire = function tryRequire(id) {
 
 var requireById = (exports.requireById = function requireById(id) {
   if (!isWebpack() && typeof id === 'string') {
-    return module.require(id)
+    return module.require('' + id)
   }
 
-  return __webpack_require__(id)
+  return __webpack_require__('' + id)
 })
 
 var resolveExport = (exports.resolveExport = function resolveExport(
